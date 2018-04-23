@@ -6,7 +6,7 @@ Easy creation and management of toggle buttons from the Material Design [spec](h
 ![Multiple](/art/multiple.png "Multiple")
 ![Segmented](/art/segmented.png "Segmented")
 
-[![](https://jitpack.io/v/savvyapps/ToggleButtonLayout.svg)](https://jitpack.io/#in.nerd-is/ToggleButtonLayout)
+[![](https://jitpack.io/v/in.nerd-is/ToggleButtonLayout.svg)](https://jitpack.io/#in.nerd-is/ToggleButtonLayout)
 
 ## What changed
 

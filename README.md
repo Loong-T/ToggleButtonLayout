@@ -6,7 +6,7 @@ Easy creation and management of toggle buttons from the Material Design [spec](h
 ![Multiple](/art/multiple.png "Multiple")
 ![Segmented](/art/segmented.png "Segmented")
 
-[![Build Status](https://travis-ci.org/savvyapps/ToggleButtonLayout.svg?branch=master)](https://travis-ci.org/savvyapps/ToggleButtonLayout) [![](https://jitpack.io/v/savvyapps/ToggleButtonLayout.svg)](https://jitpack.io/#savvyapps/ToggleButtonLayout)
+[![](https://jitpack.io/v/savvyapps/ToggleButtonLayout.svg)](https://jitpack.io/#in.nerd-is/ToggleButtonLayout)
 
 ## What changed
 
@@ -42,7 +42,7 @@ allprojects {
 Then, add the library to your project `build.gradle`
 ```gradle
 dependencies {
-    implementation 'com.github.savvyapps:ToggleButtonLayout:latest.version.here'
+    implementation 'in.nerd-is:ToggleButtonLayout:latest.version.here'
 }
 ```
 

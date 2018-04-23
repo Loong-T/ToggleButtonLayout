@@ -8,6 +8,24 @@ Easy creation and management of toggle buttons from the Material Design [spec](h
 
 [![Build Status](https://travis-ci.org/savvyapps/ToggleButtonLayout.svg?branch=master)](https://travis-ci.org/savvyapps/ToggleButtonLayout) [![](https://jitpack.io/v/savvyapps/ToggleButtonLayout.svg)](https://jitpack.io/#savvyapps/ToggleButtonLayout)
 
+## What changed
+
+I add two XML attrs to set the background and text color of the toggle.
+
+To set background, use `app:selectedColors`. It accepts a TypedArray resource, for example:
+
+```xml
+<array name="toggle_colors">
+    <item>#ff0000</item>
+    <item>#00ff00</item>
+    <item>#0000ff</item>
+</array>
+```
+
+Similarly, use `app:textColors` to set the toggle's text color, it also accepts a TypedArray.
+
+You can find usage in the sample app.
+
 ## Dependency
 
 Add this in your root `build.gradle` file (**not** your module `build.gradle` file):

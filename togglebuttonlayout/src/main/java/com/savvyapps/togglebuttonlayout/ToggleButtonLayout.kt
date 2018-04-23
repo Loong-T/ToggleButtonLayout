@@ -2,8 +2,10 @@ package com.savvyapps.togglebuttonlayout
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
@@ -49,6 +51,8 @@ class ToggleButtonLayout : CardView {
     private var dividerColor: Int? = null
     @ColorInt
     private var selectedColor: Int? = null
+    private var selectedColors: Array<Drawable>? = null
+    private var textColors: Array<ColorStateList>? = null
     @LayoutRes
     private var layoutRes: Int? = null
     private var mode: Int = 0
@@ -107,7 +111,27 @@ class ToggleButtonLayout : CardView {
             val mode = a.getInt(R.styleable.ToggleButtonLayout_toggleMode, MODE_WRAP)
             this.mode = mode
         }
-        selectedColor = a.getColor(R.styleable.ToggleButtonLayout_selectedColor, Utils.getThemeAttrColor(getContext(), R.attr.colorControlHighlight))
+
+        if (a.hasValue(R.styleable.ToggleButtonLayout_selectedColors)) {
+            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_selectedColors, -1)
+            if (resId != -1) {
+                val ta = resources.obtainTypedArray(resId)
+                selectedColors = Array(ta.length()) { ta.getDrawable(it) }
+                ta.recycle()
+            }
+        }
+        selectedColor = a.getColor(R.styleable.ToggleButtonLayout_selectedColor,
+            Utils.getThemeAttrColor(getContext(), R.attr.colorControlHighlight))
+
+        if (a.hasValue(R.styleable.ToggleButtonLayout_textColors)) {
+            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_textColors, 0)
+            if (resId != -1) {
+                val ta = resources.obtainTypedArray(resId)
+                textColors = Array(ta.length()) { ta.getColorStateList(it) }
+                ta.recycle()
+            }
+        }
+
         //make sure this one is last
         if (a.hasValue(R.styleable.ToggleButtonLayout_menu)) {
             inflateMenu(a.getResourceId(R.styleable.ToggleButtonLayout_menu, 0))
@@ -159,6 +183,10 @@ class ToggleButtonLayout : CardView {
         if (mode == MODE_EVEN) {
             val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
             toggleView.layoutParams = params
+        }
+        val idx = toggles.indexOf(toggle)
+        if (textColors != null && idx < textColors!!.size) {
+            toggleView.textView?.setTextColor(textColors!![idx])
         }
         linearLayout.addView(toggleView)
     }
@@ -221,8 +249,15 @@ class ToggleButtonLayout : CardView {
     private fun toggleState(toggle: Toggle) {
         val view = linearLayout.findViewById<View>(toggle.id)
         view.isSelected = toggle.isSelected
+
         if (toggle.isSelected) {
-            view.background = ColorDrawable(selectedColor!!)
+            val index = toggles.indexOf(toggle)
+            val colorDrawable = if (selectedColors != null && selectedColors!!.size > index) {
+                selectedColors!![index]
+            } else {
+                ColorDrawable(selectedColor!!)
+            }
+            view.background = colorDrawable
         } else {
             view.background = null
         }

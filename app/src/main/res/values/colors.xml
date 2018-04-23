@@ -5,4 +5,16 @@
     <color name="colorAccent">#5cb785</color>
 
     <color name="white">#FFFFFF</color>
+
+    <array name="toggle_colors">
+        <item>#ff0000</item>
+        <item>#00ff00</item>
+        <item>#0000ff</item>
+    </array>
+
+    <array name="text_colors">
+        <item>@color/text_red</item>
+        <item>@color/text_green</item>
+        <item>@color/text_blue</item>
+    </array>
 </resources>

@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             style="@style/Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -37,34 +37,46 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
-                app:menu="@menu/toggles"/>
+                app:menu="@menu/toggles" />
 
             <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
                 android:id="@+id/toggleMultiple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 app:dividerColor="@android:color/darker_gray"
                 app:menu="@menu/toggles_multiple"
-                app:multipleSelection="true"/>
+                app:multipleSelection="true" />
 
             <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
                 android:id="@+id/toggleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
                 app:allowDeselection="false"
                 app:customLayout="@layout/view_toggle_button"
                 app:dividerColor="@android:color/darker_gray"
                 app:menu="@menu/toggles_text"
                 app:selectedColor="?attr/colorAccent"
-                app:toggleMode="even"/>
+                app:toggleMode="even" />
+
+            <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
+                android:id="@+id/toggleColorful"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:menu="@menu/toggles_different_color"
+                app:multipleSelection="true"
+                app:selectedColors="@array/toggle_colors"
+                app:textColors="@array/text_colors" />
 
         </LinearLayout>
 

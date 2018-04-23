@@ -12,6 +12,8 @@
             <enum name="wrap" value="0"/>
             <enum name="even" value="1"/>
         </attr>
+        <attr name="selectedColors" format="reference" />
+        <attr name="textColors" format="reference" />
     </declare-styleable>
 
 </resources>

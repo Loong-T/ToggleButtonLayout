@@ -162,7 +162,7 @@ class ToggleButtonLayout : CardView {
     }
 
     /**
-     * Manually set state of the specified [toggleId] toggle to [toggled].
+     * Manually set state of the [specified id][toggleId] toggle to [toggled].
      */
     fun setToggled(toggleId: Int, toggled: Boolean) {
         for ((i, toggle) in toggles.withIndex()) {
@@ -224,9 +224,14 @@ class ToggleButtonLayout : CardView {
     }
 
     /**
-     * Set all toggles to [selected]
+     * Set all toggles to [selected].
+     *
+     * If [setMultipleSelection] is set to false, [toggleAll] to [true][selected] will do nothing
      */
     fun toggleAll(selected: Boolean) {
+        if (selected && !multipleSelection)
+            return
+
         for ((i, toggle) in toggles.withIndex()) {
             toggle.isSelected = selected
             syncToggleState(i)

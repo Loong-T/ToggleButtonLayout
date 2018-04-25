@@ -5,6 +5,7 @@ Easy creation and management of toggle buttons from the Material Design [spec](h
 ![Single](/art/single.png "Single")
 ![Multiple](/art/multiple.png "Multiple")
 ![Segmented](/art/segmented.png "Segmented")
+![Colorful](/art/colorful.png "Colorful")
 
 [![](https://jitpack.io/v/in.nerd-is/ToggleButtonLayout.svg)](https://jitpack.io/#in.nerd-is/ToggleButtonLayout)
 
@@ -32,10 +33,10 @@ Add this in your root `build.gradle` file (**not** your module `build.gradle` fi
 
 ```gradle
 allprojects {
-	repositories {
-		...
-		maven { url "https://jitpack.io" }
-	}
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
 }
 ```
 
@@ -98,13 +99,12 @@ You can customize the `ToggleButtonLayout` via XML attributes:
     app:selectedColor="?attr/colorAccent"
     app:menu="@menu/toggles"
     app:multipleSelection="true"
-    app:toggleMode="even" />
+    app:toggleLayoutMode="even" />
 ```
 
 If you use the `customLayout` attribute, the layout is expected to have a `TextView` with an ID of `android:id="@android:id/text1"` if you are using a title, and if you are using an icon, `android:id="@android:id/icon"`. You can omit either of these if you are only using a menu resource with a title or just an icon. See the sample for more.
 
 ## Notes
-- If you need to rely on a Java version of `ToggleButtonLayout`, you can use the `java` branch.
 - Please open an issue or make a pull request for additional features you might want. For PRs, please follow the [Android Kotlin Style Guide](https://android.github.io/kotlin-guides/style.html)
 
 License

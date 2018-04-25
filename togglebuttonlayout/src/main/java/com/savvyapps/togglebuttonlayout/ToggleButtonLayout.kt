@@ -266,7 +266,7 @@ class ToggleButtonLayout : CardView {
             toggleView.layoutParams = params
         }
 
-        if (layoutRes != null || layoutRes == 0) {
+        if (layoutRes == null && layoutRes != 0) {
             if (textColors != null && toggleIndex < textColors!!.size) {
                 toggleView.textView?.setTextColor(textColors!![toggleIndex])
             } else {

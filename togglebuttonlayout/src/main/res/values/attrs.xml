@@ -2,18 +2,19 @@
 <resources>
 
     <declare-styleable name="ToggleButtonLayout">
-        <attr name="menu" format="reference"/>
-        <attr name="multipleSelection" format="boolean"/>
-        <attr name="allowDeselection" format="boolean"/>
-        <attr name="dividerColor" format="color"/>
-        <attr name="selectedColor" format="color"/>
-        <attr name="customLayout" format="reference"/>
-        <attr name="toggleMode" format="enum">
-            <enum name="wrap" value="0"/>
-            <enum name="even" value="1"/>
-        </attr>
+        <attr name="menu" format="reference" />
+        <attr name="multipleSelection" format="boolean" />
+        <attr name="allowDeselection" format="boolean" />
+        <attr name="dividerColor" format="color" />
+        <attr name="selectedColor" format="color" />
         <attr name="selectedColors" format="reference" />
+        <attr name="textColor" format="color" />
         <attr name="textColors" format="reference" />
+        <attr name="customLayout" format="reference" />
+        <attr name="toggleLayoutMode" format="enum">
+            <enum name="wrap" value="0" />
+            <enum name="even" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>

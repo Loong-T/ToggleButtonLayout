@@ -64,7 +64,7 @@
                 app:dividerColor="@android:color/darker_gray"
                 app:menu="@menu/toggles_text"
                 app:selectedColor="?attr/colorAccent"
-                app:toggleMode="even" />
+                app:toggleLayoutMode="even" />
 
             <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
                 android:id="@+id/toggleColorful"

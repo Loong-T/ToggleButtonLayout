@@ -17,5 +17,7 @@ class ToggleButtonLayoutActivity : AppCompatActivity() {
             Snackbar.make(root, "Toggle " + toggle.id + " selected state " + selected, Snackbar.LENGTH_LONG)
                     .show()
         }
+
+        toggleColorful.toggleAll(true)
     }
 }

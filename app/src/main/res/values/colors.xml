@@ -7,9 +7,9 @@
     <color name="white">#FFFFFF</color>
 
     <array name="toggle_colors">
-        <item>#ff0000</item>
-        <item>#00ff00</item>
-        <item>#0000ff</item>
+        <item>#F596AA</item>
+        <item>#24936E</item>
+        <item>#2EA9DF</item>
     </array>
 
     <array name="text_colors">

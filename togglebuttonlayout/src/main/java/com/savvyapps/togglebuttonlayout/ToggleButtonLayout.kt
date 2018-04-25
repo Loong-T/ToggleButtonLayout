@@ -266,10 +266,12 @@ class ToggleButtonLayout : CardView {
             toggleView.layoutParams = params
         }
 
-        if (textColors != null && toggleIndex < textColors!!.size) {
-            toggleView.textView?.setTextColor(textColors!![toggleIndex])
-        } else {
-            toggleView.textView?.setTextColor(textColor!!)
+        if (layoutRes != null || layoutRes == 0) {
+            if (textColors != null && toggleIndex < textColors!!.size) {
+                toggleView.textView?.setTextColor(textColors!![toggleIndex])
+            } else {
+                toggleView.textView?.setTextColor(textColor!!)
+            }
         }
 
         linearLayout.addView(toggleView)

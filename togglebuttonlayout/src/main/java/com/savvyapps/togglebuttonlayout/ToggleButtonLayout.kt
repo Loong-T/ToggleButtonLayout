@@ -82,6 +82,8 @@ class ToggleButtonLayout : CardView {
         linearLayout = LinearLayout(context)
         addView(linearLayout)
 
+        preventCornerOverlap = false
+
         val a = getContext().obtainStyledAttributes(
             attrs, R.styleable.ToggleButtonLayout, 0, 0
         )

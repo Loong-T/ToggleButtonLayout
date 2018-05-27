@@ -14,8 +14,11 @@ class ToggleButtonLayoutActivity : AppCompatActivity() {
         toolbar.setTitle(R.string.app_name)
 
         toggleButtonLayout.onToggledListener = { toggle, selected ->
-            Snackbar.make(root, "Toggle " + toggle.id + " selected state " + selected, Snackbar.LENGTH_LONG)
-                    .show()
+            Snackbar.make(
+                root,
+                "Toggle ${toggle.id} selected state $selected",
+                Snackbar.LENGTH_LONG
+            ).show()
         }
 
         toggleColorful.toggleAll(true)

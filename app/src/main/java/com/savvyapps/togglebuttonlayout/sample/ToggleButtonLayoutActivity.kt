@@ -22,5 +22,14 @@ class ToggleButtonLayoutActivity : AppCompatActivity() {
         }
 
         tblColorful.toggleAll(true)
+
+        tblCustom.toggle(R.id.toggle_3, true)
+        tblCustom.onToggledListener = { toggle, _ ->
+            when (toggle.id) {
+                R.id.toggle_2 -> tblColorful.inflateMenu(R.menu.toggles_colorful_2)
+                R.id.toggle_3 -> tblColorful.inflateMenu(R.menu.toggles_colorful_3)
+                R.id.toggle_4 -> tblColorful.inflateMenu(R.menu.toggles_colorful_4)
+            }
+        }
     }
 }

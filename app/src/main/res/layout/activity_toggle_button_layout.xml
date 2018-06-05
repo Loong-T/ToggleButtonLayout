@@ -53,7 +53,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             app:contentColors="@array/text_colors"
             app:dividerSize="1dp"
-            app:menu="@menu/toggles_colorful"
+            app:menu="@menu/toggles_colorful_3"
             app:multipleSelection="true"
             app:toggleBackgrounds="@array/toggle_backgrounds" />
 

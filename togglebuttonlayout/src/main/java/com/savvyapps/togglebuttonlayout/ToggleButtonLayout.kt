@@ -166,6 +166,7 @@ class ToggleButtonLayout : CardView {
     @SuppressLint("RestrictedApi")
     fun inflateMenu(@MenuRes menuId: Int) {
         rootContainer.removeAllViews()
+        toggles.clear()
 
         val menu = MenuBuilder(context)
         MenuInflater(context).inflate(menuId, menu)

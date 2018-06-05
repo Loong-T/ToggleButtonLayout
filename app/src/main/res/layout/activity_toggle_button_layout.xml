@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleButtonLayout"
+            android:id="@+id/tblNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -21,18 +21,18 @@
             app:menu="@menu/toggles" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleMultiple"
+            android:id="@+id/tblMulti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            app:dividerColor="@android:color/darker_gray"
             app:contentColor="@color/selectable_icon"
+            app:dividerColor="@android:color/darker_gray"
             app:menu="@menu/toggles_multiple"
             app:multipleSelection="true" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleCustom"
+            android:id="@+id/tblCustom"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
@@ -40,10 +40,9 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             app:allowDeselection="false"
-            app:customLayout="@layout/view_toggle_button"
+            app:customLayout="@layout/custom_toggle_layout"
             app:dividerSize="2dp"
             app:menu="@menu/toggles_text"
-            app:toggleBackground="?attr/colorAccent"
             app:toggleLayoutMode="even" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout

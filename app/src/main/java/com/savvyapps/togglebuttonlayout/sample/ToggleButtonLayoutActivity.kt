@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_toggle_button.*
+import kotlinx.android.synthetic.main.activity_toggle_button_layout.*
 
 @SuppressLint("ShowToast")
 class ToggleButtonLayoutActivity : AppCompatActivity() {
@@ -13,10 +13,10 @@ class ToggleButtonLayoutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_toggle_button)
+        setContentView(R.layout.activity_toggle_button_layout)
 
-        toggleButtonLayout.toggle(R.id.toggle_left, true)
-        toggleButtonLayout.onToggledListener = { toggle, selected ->
+        tblNormal.toggle(R.id.toggle_left, true)
+        tblNormal.onToggledListener = { toggle, selected ->
             toast.setText("Toggle ${toggle.id} selected state $selected")
             toast.show()
         }

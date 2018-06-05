@@ -283,31 +283,36 @@ class ToggleButtonLayout : CardView {
         context: Context, private val toggle: Toggle, @LayoutRes layoutRes: Int
     ) : FrameLayout(context) {
 
+        private val isCustomView = layoutRes != 0
+
         var textView: TextView? = null
         var imageView: ImageView? = null
 
         internal var contentColor: ColorStateList? = null
             set(value) {
                 field = value
-                textView?.setTextColor(value)
+                if (!isCustomView) {
+                    textView?.setTextColor(value)
+                }
             }
 
         override fun setSelected(selected: Boolean) {
-            var color = contentColor!!.defaultColor
-            if (selected) {
-                color = contentColor!!.getColorForState(
-                    intArrayOf(android.R.attr.state_selected),
-                    color
-                )
+            if (!isCustomView) {
+                var color = contentColor!!.defaultColor
+                if (selected) {
+                    color = contentColor!!.getColorForState(
+                        intArrayOf(android.R.attr.state_selected), color
+                    )
+                }
+                imageView?.setColorFilter(color)
             }
-            imageView?.setColorFilter(color)
             super.setSelected(selected)
         }
 
         init {
             id = toggle.id
 
-            if (layoutRes != 0) {
+            if (isCustomView) {
                 View.inflate(context, layoutRes, this)
                 textView = findViewById(android.R.id.text1)
                 imageView = findViewById(android.R.id.icon)

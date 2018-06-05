@@ -18,7 +18,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             app:dividerSize="1dp"
-            app:menu="@menu/toggles" />
+            app:menu="@menu/toggles_align" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
             android:id="@+id/tblMulti"
@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             app:contentColor="@color/selectable_icon"
             app:dividerColor="@android:color/darker_gray"
-            app:menu="@menu/toggles_multiple"
+            app:menu="@menu/toggles_style"
             app:multipleSelection="true" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
@@ -42,32 +42,20 @@
             app:allowDeselection="false"
             app:customLayout="@layout/custom_toggle_layout"
             app:dividerSize="2dp"
-            app:menu="@menu/toggles_text"
+            app:menu="@menu/toggles_custom"
             app:toggleLayoutMode="even" />
 
         <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleColorful"
+            android:id="@+id/tblColorful"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             app:contentColors="@array/text_colors"
-            app:menu="@menu/toggles_separate_color"
+            app:dividerSize="1dp"
+            app:menu="@menu/toggles_colorful"
             app:multipleSelection="true"
-            app:toggleBackgrounds="@array/toggle_colors" />
-
-        <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleIconColorful"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:contentColors="@array/text_colors"
-            app:menu="@menu/toggles_multiple"
-            app:multipleSelection="true"
-            app:toggleBackgrounds="@array/toggle_colors" />
+            app:toggleBackgrounds="@array/toggle_backgrounds" />
 
     </LinearLayout>
 

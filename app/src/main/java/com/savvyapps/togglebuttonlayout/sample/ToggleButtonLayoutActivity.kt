@@ -21,6 +21,6 @@ class ToggleButtonLayoutActivity : AppCompatActivity() {
             toast.show()
         }
 
-        toggleColorful.toggleAll(true)
+        tblColorful.toggleAll(true)
     }
 }

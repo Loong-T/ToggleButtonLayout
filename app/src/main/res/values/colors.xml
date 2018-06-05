@@ -3,18 +3,4 @@
     <color name="colorPrimary">#3d89c1</color>
     <color name="colorPrimaryDark">#2470A8</color>
     <color name="colorAccent">#5cb785</color>
-
-    <color name="white">#FFFFFF</color>
-
-    <array name="toggle_colors">
-        <item>#F596AA</item>
-        <item>#24936E</item>
-        <item>#2EA9DF</item>
-    </array>
-
-    <array name="text_colors">
-        <item>@color/text_red</item>
-        <item>@color/text_green</item>
-        <item>@color/text_blue</item>
-    </array>
 </resources>

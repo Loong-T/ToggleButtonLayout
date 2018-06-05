@@ -14,19 +14,16 @@
   ~    limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
+    <array name="toggle_backgrounds">
+        <item>@drawable/background_red</item>
+        <item>@drawable/background_green</item>
+        <item>@drawable/background_blue</item>
+    </array>
 
-    <item
-        android:id="@+id/toggle_bold"
-        android:icon="@drawable/ic_format_bold_black_24dp"
-        android:title="Bold" />
-
-    <item
-        android:id="@+id/toggle_italic"
-        android:icon="@drawable/ic_format_italic_black_24dp"
-        android:title="Italic" />
-    <item
-        android:id="@+id/toggle_underline"
-        android:icon="@drawable/ic_format_underlined_black_24dp"
-        android:title="Underline" />
-</menu>
+    <array name="text_colors">
+        <item>@color/text_red</item>
+        <item>@color/text_green</item>
+        <item>@color/text_blue</item>
+    </array>
+</resources>

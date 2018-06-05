@@ -4,32 +4,23 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.annotation.AttrRes
-import android.util.DisplayMetrics
 
-internal object Utils {
+internal fun Context.dpToPx(dp: Int): Int {
+    return Math.round(dp * this.resources.displayMetrics.density)
+}
 
-    private var xdpi = java.lang.Float.MIN_VALUE
+internal fun Context.getThemeAttrDrawable(@AttrRes attributeDrawable: Int): Drawable? {
+    val attrs = intArrayOf(attributeDrawable)
+    val ta = this.obtainStyledAttributes(attrs)
+    val drawableFromTheme = ta.getDrawable(0)
+    ta.recycle()
+    return drawableFromTheme
+}
 
-    fun dpToPx(context: Context, dp: Int): Int {
-        if (xdpi == java.lang.Float.MIN_VALUE) {
-            xdpi = context.resources.displayMetrics.xdpi
-        }
-        return Math.round(dp * (xdpi / DisplayMetrics.DENSITY_DEFAULT))
-    }
-
-    fun getThemeAttrDrawable(context: Context, @AttrRes attributeDrawable: Int): Drawable? {
-        val attrs = intArrayOf(attributeDrawable)
-        val ta = context.obtainStyledAttributes(attrs)
-        val drawableFromTheme = ta.getDrawable(0)
-        ta.recycle()
-        return drawableFromTheme
-    }
-
-    fun getThemeAttrColor(context: Context, @AttrRes attributeColor: Int): Int {
-        val attrs = intArrayOf(attributeColor)
-        val ta = context.obtainStyledAttributes(attrs)
-        val color = ta.getColor(0, Color.TRANSPARENT)
-        ta.recycle()
-        return color
-    }
+internal fun Context.getThemeAttrColor(@AttrRes attributeColor: Int): Int {
+    val attrs = intArrayOf(attributeColor)
+    val ta = this.obtainStyledAttributes(attrs)
+    val color = ta.getColor(0, Color.TRANSPARENT)
+    ta.recycle()
+    return color
 }

@@ -5,7 +5,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha15'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha16'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -24,6 +24,6 @@ task clean(type: Delete) {
 
 ext {
     compileSdkVersion = 27
-    targetSdkVersion = compileSdkVersion
+    targetSdkVersion = 27
     supportLibVersion = '27.1.1'
 }

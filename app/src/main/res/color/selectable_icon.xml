@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~    Copyright 2018 Xuqiang ZHENG
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   ~    limitations under the License.
   -->
 
-<resources>
-    <color name="default_content_color">#000000</color>
-    <color name="default_selected_background">#1f000000</color>
-    <color name="default_divider_color">#e0e0e0</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#3096f5" android:state_selected="true" />
+    <item android:color="#000000" />
+</selector>

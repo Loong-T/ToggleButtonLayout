@@ -3,19 +3,22 @@ package com.savvyapps.togglebuttonlayout
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.support.annotation.ColorInt
 import android.support.annotation.LayoutRes
 import android.support.annotation.MenuRes
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.CardView
+import android.support.v7.widget.TooltipCompat
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.MenuInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,35 +30,52 @@ import android.widget.TextView
  */
 class ToggleButtonLayout : CardView {
 
-    private lateinit var linearLayout: LinearLayout
+    /**
+     * If [allow][allowDeselection] selected items to be de-selected. Defaults to true.
+     */
+    var allowDeselection = true
+
+    /**
+     * Set if we are going to [allow multiple selection][multipleSelection] or not.
+     * This will also call [reset] in order to prevent strange behaviour switching between multiple and single selection
+     */
+    var multipleSelection: Boolean = false
+        set(value) {
+            field = value
+            reset()
+        }
+
+    private lateinit var rootContainer: LinearLayout
 
     private val toggles = mutableListOf<Toggle>()
 
-    // customization
-    private var multipleSelection: Boolean = false
-    private var allowDeselection = true
     @ColorInt
     private var dividerColor: Int? = null
+    private var dividerSize: Int = 0
+    private var hasDivider = false
+
     @ColorInt
-    private var selectedColor: Int? = null
-    private var selectedColors: Array<Drawable>? = null
+    private var toggleBackground: Drawable? = null
+    private var toggleBackgrounds: Array<Drawable>? = null
+    private var isBgSeparated = false
     @ColorInt
-    private var textColor: Int? = null
-    private var textColors: Array<ColorStateList>? = null
+    private lateinit var contentColor: ColorStateList
+    private var contentColors: Array<ColorStateList>? = null
+    private var isContentSeparated = false
+
     @LayoutRes
-    private var layoutRes: Int? = null
+    private var layoutRes: Int = 0
     private var toggleLayoutMode: Int = MODE_WRAP
 
     private val onToggleClickListener = OnClickListener { v ->
         val toggle = v.getTag(R.id.tb_toggle_id) as Toggle
         val thisSelected = toggle.isSelected
-        // if allowing deselection and currently selected, do nothing. Could invert it, but
-        // it makes more sense to me this way
+
         if (!allowDeselection && thisSelected) {
             //do nothing
         } else {
-            setToggled(toggle.id, !toggle.isSelected)
-            onToggledListener?.invoke(toggle, toggle.isSelected)
+            toggle(toggle.id, !thisSelected)
+            onToggledListener?.invoke(toggle, !thisSelected)
         }
     }
 
@@ -79,71 +99,123 @@ class ToggleButtonLayout : CardView {
 
     private fun init(context: Context, attrs: AttributeSet?) {
 
-        linearLayout = LinearLayout(context)
-        addView(linearLayout)
-
         preventCornerOverlap = false
 
-        val a = getContext().obtainStyledAttributes(
-            attrs, R.styleable.ToggleButtonLayout, 0, 0
-        )
+        rootContainer = LinearLayout(context)
+        addView(rootContainer)
+
+        val a = getContext().obtainStyledAttributes(attrs, R.styleable.ToggleButtonLayout, 0, 0)
 
         multipleSelection = a.getBoolean(R.styleable.ToggleButtonLayout_multipleSelection, false)
         allowDeselection = a.getBoolean(R.styleable.ToggleButtonLayout_allowDeselection, true)
         toggleLayoutMode = a.getInt(R.styleable.ToggleButtonLayout_toggleLayoutMode, MODE_WRAP)
-        if (a.hasValue(R.styleable.ToggleButtonLayout_dividerColor)) {
-            dividerColor = a.getColor(R.styleable.ToggleButtonLayout_dividerColor, Color.GRAY)
-        }
-        if (a.hasValue(R.styleable.ToggleButtonLayout_customLayout)) {
-            layoutRes = a.getResourceId(R.styleable.ToggleButtonLayout_customLayout, 0)
+        layoutRes = a.getResourceId(R.styleable.ToggleButtonLayout_customLayout, 0)
+
+        if (a.hasValue(R.styleable.ToggleButtonLayout_dividerColor) ||
+            a.hasValue(R.styleable.ToggleButtonLayout_dividerSize)
+        ) {
+            hasDivider = true
+            dividerColor = a.getColor(
+                R.styleable.ToggleButtonLayout_dividerColor,
+                context.resources.getColor(R.color.default_divider_color)
+            )
+            dividerSize = a.getDimensionPixelSize(
+                R.styleable.ToggleButtonLayout_dividerSize,
+                context.dpToPx(1)
+            )
         }
 
-        selectedColor = a.getColor(
-            R.styleable.ToggleButtonLayout_selectedColor,
-            Utils.getThemeAttrColor(getContext(), R.attr.colorControlHighlight)
-        )
-        if (a.hasValue(R.styleable.ToggleButtonLayout_selectedColors)) {
-            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_selectedColors, -1)
-            if (resId != -1) {
-                val ta = resources.obtainTypedArray(resId)
-                selectedColors = Array(ta.length()) { ta.getDrawable(it) }
-                ta.recycle()
-            }
+        toggleBackground = a.getDrawable(R.styleable.ToggleButtonLayout_toggleBackground)
+        if (toggleBackground == null) {
+            val drawable = StateListDrawable()
+            drawable.addState(
+                intArrayOf(android.R.attr.state_selected),
+                ColorDrawable(context.resources.getColor(R.color.default_selected_background))
+            )
+            toggleBackground = drawable
+        }
+        if (a.hasValue(R.styleable.ToggleButtonLayout_toggleBackgrounds)) {
+            isBgSeparated = true
+            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_toggleBackgrounds, -1)
+            val ta = resources.obtainTypedArray(resId)
+            toggleBackgrounds = Array(ta.length()) { ta.getDrawable(it) }
+            ta.recycle()
         }
 
-        textColor = a.getColor(
-            R.styleable.ToggleButtonLayout_textColor,
-            resources.getColor(R.color.default_text_color)
-        )
-        if (a.hasValue(R.styleable.ToggleButtonLayout_textColors)) {
-            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_textColors, -1)
-            if (resId != -1) {
-                val ta = resources.obtainTypedArray(resId)
-                textColors = Array(ta.length()) { ta.getColorStateList(it) }
-                ta.recycle()
-            }
+        contentColor = a.getColorStateList(R.styleable.ToggleButtonLayout_contentColor) ?:
+                ColorStateList.valueOf(resources.getColor(R.color.default_content_color))
+        if (a.hasValue(R.styleable.ToggleButtonLayout_contentColors)) {
+            isContentSeparated = true
+            val resId = a.getResourceId(R.styleable.ToggleButtonLayout_contentColors, -1)
+            val ta = resources.obtainTypedArray(resId)
+            contentColors = Array(ta.length()) { ta.getColorStateList(it) }
+            ta.recycle()
         }
 
         // make sure this one is last
         if (a.hasValue(R.styleable.ToggleButtonLayout_menu)) {
             inflateMenu(a.getResourceId(R.styleable.ToggleButtonLayout_menu, 0))
         }
+
         a.recycle()
     }
-
 
     /**
      * Add actions to the layout from the given menu resource [menuId].
      */
     @SuppressLint("RestrictedApi")
     fun inflateMenu(@MenuRes menuId: Int) {
+        rootContainer.removeAllViews()
+
         val menu = MenuBuilder(context)
         MenuInflater(context).inflate(menuId, menu)
         for (i in 0 until menu.size()) {
             val item = menu.getItem(i)
             val toggle = Toggle(item.itemId, item.icon, item.title)
-            addToggle(toggle, i)
+            addToggle(toggle)
         }
+    }
+
+    /**
+     * Add a [toggle] to the layout
+     */
+    fun addToggle(toggle: Toggle) {
+        val index = toggles.size
+        toggles.add(toggle)
+
+        val toggleView = ToggleView(context, toggle, layoutRes)
+        toggleView.setOnClickListener(onToggleClickListener)
+
+        if (hasDivider && index > 0) {
+            val divider = View(context)
+            divider.setBackgroundColor(dividerColor!!)
+            divider.layoutParams =
+                    LinearLayout.LayoutParams(dividerSize, ViewGroup.LayoutParams.MATCH_PARENT)
+            rootContainer.addView(divider)
+        }
+
+        if (toggleLayoutMode == MODE_EVEN) {
+            toggleView.layoutParams =
+                    LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+        }
+
+        if (!isCustomLayout()) {
+            val color = if (isContentSeparated && index < contentColors!!.size) {
+                contentColors!![index]
+            } else {
+                contentColor
+            }
+            toggleView.contentColor = color
+
+            val bg = if (isBgSeparated && index < toggleBackgrounds!!.size) {
+                toggleBackgrounds!![index]
+            } else {
+                toggleBackground
+            }
+            toggleView.background = bg!!.mutate().constantState.newDrawable()
+        }
+
+        rootContainer.addView(toggleView)
     }
 
     /**
@@ -157,78 +229,26 @@ class ToggleButtonLayout : CardView {
     fun getToggle(i: Int) = toggles[i]
 
     /**
-     * Add a [toggle] to the layout
-     */
-    fun addToggle(toggle: Toggle) {
-        addToggle(toggle, toggles.size)
-    }
-
-    /**
      * Manually set state of the [specified id][toggleId] toggle to [toggled].
      */
-    fun setToggled(toggleId: Int, toggled: Boolean) {
+    fun toggle(toggleId: Int, toggled: Boolean) {
         for ((i, toggle) in toggles.withIndex()) {
-            if (multipleSelection) {
-                if (toggleId == toggle.id) {
-                    toggle.isSelected = toggled
-                    syncToggleState(i)
-                    break
-                }
-            } else {
-                if (toggleId == toggle.id) {
-                    toggle.isSelected = toggled
-                    syncToggleState(i)
-                } else if (toggle.isSelected) {
+            if (toggle.id != toggleId) {
+                if (!multipleSelection && toggle.isSelected) {
                     toggle.isSelected = false
                     syncToggleState(i)
                 }
+            } else if (toggle.isSelected != toggled) {
+                toggle.isSelected = toggled
+                syncToggleState(i)
             }
         }
-    }
-
-    /**
-     * Set state of toggle with [toggleId] to opposite
-     */
-    fun toggle(toggleId: Int) {
-        for ((i, toggle) in toggles.withIndex()) {
-            if (multipleSelection) {
-                if (toggleId == toggle.id) {
-                    toggle.isSelected = !toggle.isSelected
-                    syncToggleState(i)
-                    break
-                }
-            } else {
-                if (toggleId == toggle.id) {
-                    toggle.isSelected = !toggle.isSelected
-                    syncToggleState(i)
-                } else if (toggle.isSelected) {
-                    toggle.isSelected = false
-                    syncToggleState(i)
-                }
-            }
-        }
-    }
-
-    /**
-     * Set if we are going to [allow] multiple selection or not. This will also call [reset]
-     * in order to prevent strange behaviour switching between multiple and single selection
-     */
-    fun setMultipleSelection(allow: Boolean) {
-        multipleSelection = allow
-        reset()
-    }
-
-    /**
-     * If [allow] selected items to be de-selected. Defaults to true.
-     */
-    fun setAllowDeselection(allow: Boolean) {
-        allowDeselection = allow
     }
 
     /**
      * Set all toggles to [selected].
      *
-     * If [setMultipleSelection] is set to false, [toggleAll] to [true][selected] will do nothing
+     * If [multipleSelection] is set to false, [toggleAll] to [true][selected] will do nothing
      */
     fun toggleAll(selected: Boolean) {
         if (selected && !multipleSelection)
@@ -247,85 +267,83 @@ class ToggleButtonLayout : CardView {
         toggleAll(false)
     }
 
-    private fun addToggle(toggle: Toggle, toggleIndex: Int) {
-        toggles.add(toggle)
-        val toggleView = ToggleView(context, toggle, layoutRes)
-        toggleView.setOnClickListener(onToggleClickListener)
-
-        if (dividerColor != null && toggles.size > 1) {
-            val divider = View(context)
-            divider.setBackgroundColor(dividerColor!!)
-            val params = LinearLayout.LayoutParams(
-                Utils.dpToPx(context, 1),
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            divider.layoutParams = params
-            linearLayout.addView(divider)
-        }
-
-        if (toggleLayoutMode == MODE_EVEN) {
-            val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
-            toggleView.layoutParams = params
-        }
-
-        if (layoutRes == null && layoutRes != 0) {
-            if (textColors != null && toggleIndex < textColors!!.size) {
-                toggleView.textView?.setTextColor(textColors!![toggleIndex])
-            } else {
-                toggleView.textView?.setTextColor(textColor!!)
-            }
-        }
-
-        linearLayout.addView(toggleView)
-    }
-
     private fun syncToggleState(index: Int) {
         val toggle = toggles[index]
-        val view = linearLayout.findViewById<View>(toggle.id)
+        val view = rootContainer.findViewById<ToggleView>(toggle.id)
         view.isSelected = toggle.isSelected
-
-        if (toggle.isSelected) {
-            val colorDrawable = if (selectedColors != null && selectedColors!!.size > index) {
-                selectedColors!![index]
-            } else {
-                ColorDrawable(selectedColor!!)
-            }
-            view.background = colorDrawable
-        } else {
-            view.background = null
-        }
     }
+
+    private fun isCustomLayout() = layoutRes != 0
 
     /**
      * Default view for Toggle
      */
     @SuppressLint("ViewConstructor")
-    internal class ToggleView(context: Context, toggle: Toggle, @LayoutRes layoutRes: Int?) :
-        FrameLayout(context) {
+    private class ToggleView(
+        context: Context, private val toggle: Toggle, @LayoutRes layoutRes: Int
+    ) : FrameLayout(context) {
+
         var textView: TextView? = null
         var imageView: ImageView? = null
 
+        internal var contentColor: ColorStateList? = null
+            set(value) {
+                field = value
+                textView?.setTextColor(value)
+            }
+
+        override fun setSelected(selected: Boolean) {
+            var color = contentColor!!.defaultColor
+            if (selected) {
+                color = contentColor!!.getColorForState(
+                    intArrayOf(android.R.attr.state_selected),
+                    color
+                )
+            }
+            imageView?.setColorFilter(color)
+            super.setSelected(selected)
+        }
+
         init {
             id = toggle.id
-            if (layoutRes != null) {
+
+            if (layoutRes != 0) {
                 View.inflate(context, layoutRes, this)
                 textView = findViewById(android.R.id.text1)
                 imageView = findViewById(android.R.id.icon)
             } else {
-                textView = TextView(context)
-                imageView = ImageView(context)
-                addView(imageView)
-                addView(textView)
-                val eightDp = Utils.dpToPx(getContext(), 8)
-                setPadding(eightDp, eightDp, eightDp, eightDp)
+                buildDefaultView()
             }
+
             setTag(R.id.tb_toggle_id, toggle)
             textView?.text = toggle.title
-            if (toggle.icon != null) {
+            if (hasIcon()) {
                 imageView?.setImageDrawable(toggle.icon)
             }
-            foreground = Utils.getThemeAttrDrawable(getContext(), R.attr.selectableItemBackground)
+            foreground = context.getThemeAttrDrawable(R.attr.selectableItemBackground)
         }
+
+        private fun buildDefaultView() {
+            val lp = LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.CENTER)
+            if (!hasIcon()) {
+                textView = TextView(context)
+                textView!!.layoutParams = lp
+                addView(textView)
+            } else {
+                imageView = ImageView(context)
+                imageView!!.layoutParams = lp
+
+                if (toggle.title != null) {
+                    TooltipCompat.setTooltipText(this, toggle.title)
+                }
+                addView(imageView)
+            }
+
+            val eightDp = context.dpToPx(8)
+            setPadding(eightDp, eightDp, eightDp, eightDp)
+        }
+
+        private fun hasIcon() = toggle.icon != null
     }
 
     companion object {

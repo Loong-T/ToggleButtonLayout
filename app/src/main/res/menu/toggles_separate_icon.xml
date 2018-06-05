@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~    Copyright 2018 Xuqiang ZHENG
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,19 @@
   ~    limitations under the License.
   -->
 
-<resources>
-    <color name="default_content_color">#000000</color>
-    <color name="default_selected_background">#1f000000</color>
-    <color name="default_divider_color">#e0e0e0</color>
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/toggle_bold"
+        android:icon="@drawable/ic_format_bold_black_24dp"
+        android:title="Bold" />
+
+    <item
+        android:id="@+id/toggle_italic"
+        android:icon="@drawable/ic_format_italic_black_24dp"
+        android:title="Italic" />
+    <item
+        android:id="@+id/toggle_underline"
+        android:icon="@drawable/ic_format_underlined_black_24dp"
+        android:title="Underline" />
+</menu>

@@ -3,13 +3,16 @@
 
     <item
         android:id="@+id/toggle_bold"
-        android:icon="@drawable/ic_format_bold_black_24dp" />
+        android:icon="@drawable/ic_format_bold_black_24dp"
+        android:title="Bold" />
 
     <item
         android:id="@+id/toggle_italic"
-        android:icon="@drawable/ic_format_italic_black_24dp" />
+        android:icon="@drawable/ic_format_italic_black_24dp"
+        android:title="Italic" />
 
     <item
         android:id="@+id/toggle_underline"
-        android:icon="@drawable/ic_format_underlined_black_24dp" />
+        android:icon="@drawable/ic_format_underlined_black_24dp"
+        android:title="Underline" />
 </menu>

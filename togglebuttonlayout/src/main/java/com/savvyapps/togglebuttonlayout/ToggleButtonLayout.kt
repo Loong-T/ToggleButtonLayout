@@ -17,8 +17,8 @@ import android.view.Gravity
 import android.view.MenuInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -190,14 +190,14 @@ class ToggleButtonLayout : CardView {
         if (hasDivider && index > 0) {
             val divider = View(context)
             divider.setBackgroundColor(dividerColor!!)
-            divider.layoutParams =
-                    LinearLayout.LayoutParams(dividerSize, ViewGroup.LayoutParams.MATCH_PARENT)
+            divider.layoutParams = LayoutParams(dividerSize, MATCH_PARENT)
             rootContainer.addView(divider)
         }
 
         if (toggleLayoutMode == MODE_EVEN) {
-            toggleView.layoutParams =
-                    LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+            toggleView.layoutParams = LinearLayout.LayoutParams(0, MATCH_PARENT, 1f)
+        } else {
+            toggleView.layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         }
 
         if (!isCustomLayout()) {
@@ -297,19 +297,6 @@ class ToggleButtonLayout : CardView {
                 }
             }
 
-        override fun setSelected(selected: Boolean) {
-            if (!isCustomView) {
-                var color = contentColor!!.defaultColor
-                if (selected) {
-                    color = contentColor!!.getColorForState(
-                        intArrayOf(android.R.attr.state_selected), color
-                    )
-                }
-                imageView?.setColorFilter(color)
-            }
-            super.setSelected(selected)
-        }
-
         init {
             id = toggle.id
 
@@ -330,7 +317,7 @@ class ToggleButtonLayout : CardView {
         }
 
         private fun buildDefaultView() {
-            val lp = LayoutParams(MATCH_PARENT, MATCH_PARENT, Gravity.CENTER)
+            val lp = LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.CENTER)
             if (!hasIcon()) {
                 textView = TextView(context)
                 textView!!.layoutParams = lp
@@ -345,8 +332,21 @@ class ToggleButtonLayout : CardView {
                 addView(imageView)
             }
 
-            val eightDp = context.dpToPx(8)
-            setPadding(eightDp, eightDp, eightDp, eightDp)
+            val padding = context.resources.getDimensionPixelSize(R.dimen.default_padding)
+            setPadding(padding, padding, padding, padding)
+        }
+
+        override fun setSelected(selected: Boolean) {
+            if (!isCustomView) {
+                var color = contentColor!!.defaultColor
+                if (selected) {
+                    color = contentColor!!.getColorForState(
+                        intArrayOf(android.R.attr.state_selected), color
+                    )
+                }
+                imageView?.setColorFilter(color)
+            }
+            super.setSelected(selected)
         }
 
         private fun hasIcon() = toggle.icon != null

@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
+    ext.kotlin_version = '1.2.71'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha16'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -23,7 +23,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 27
-    targetSdkVersion = 27
-    supportLibVersion = '27.1.1'
+    compileSdkVersion = 28
+    targetSdkVersion = 28
 }

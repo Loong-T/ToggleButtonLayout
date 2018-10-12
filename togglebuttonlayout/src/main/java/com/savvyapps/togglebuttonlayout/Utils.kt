@@ -3,7 +3,7 @@ package com.savvyapps.togglebuttonlayout
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.annotation.AttrRes
+import androidx.annotation.AttrRes
 
 internal fun Context.dpToPx(dp: Int): Int {
     return Math.round(dp * this.resources.displayMetrics.density)
